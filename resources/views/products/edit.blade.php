@@ -53,14 +53,14 @@
         <!-- Categories Multi-Select -->
         <div class="mb-6">
             <label class="block font-medium mb-1">Categories</label>
-            <select name="categories[]" id="categories" multiple class="w-full">
-                @foreach($categories as $category)
-                    <option value="{{ $category }}"
-                        {{ (is_array(old('categories', $product->categories)) && in_array($category, old('categories', $product->categories))) ? 'selected' : '' }}>
-                        {{ $category }}
-                    </option>
-                @endforeach
-            </select>
+           <select name="categories[]" id="categories" multiple class="w-full">
+    @foreach($categories as $category)
+        <option value="{{ $category->id }}"
+            {{ in_array($category->id, old('categories', $product->categories ?? [])) ? 'selected' : '' }}>
+            {{ $category->name }}
+        </option>
+    @endforeach
+</select>
             @error('categories') <p class="text-red-600 mt-1 text-sm">{{ $message }}</p> @enderror
         </div>
 
