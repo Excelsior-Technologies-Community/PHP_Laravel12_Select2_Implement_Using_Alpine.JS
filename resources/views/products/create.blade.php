@@ -5,13 +5,11 @@
     <title>Create Product</title>
     @vite(['resources/css/app.css','resources/js/app.js'])
 
-    <!-- Select2 CSS & jQuery -->
     <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
 
     <style>
-        /* Pillbox style for selected items */
         .select2-selection__choice {
             background-color: #2563eb !important;
             color: white !important;
@@ -36,7 +34,6 @@
     <form method="POST" action="{{ route('products.store') }}">
         @csrf
 
-        <!-- Name -->
         <div class="mb-4">
             <label class="block font-medium mb-1">Name</label>
             <input type="text" name="name" value="{{ old('name') }}"
@@ -45,7 +42,6 @@
             @error('name') <p class="text-red-600 mt-1 text-sm">{{ $message }}</p> @enderror
         </div>
 
-        <!-- Description -->
         <div class="mb-4">
             <label class="block font-medium mb-1">Description</label>
             <textarea name="description"
@@ -54,20 +50,26 @@
             @error('description') <p class="text-red-600 mt-1 text-sm">{{ $message }}</p> @enderror
         </div>
 
-        <!-- Categories Multi-Select -->
+        <div class="mb-4">
+            <label class="block font-medium mb-1">Price</label>
+            <input type="number" name="price" value="{{ old('price') }}" step="0.01"
+                   class="w-full border px-3 py-2 rounded focus:outline-none focus:ring-2 focus:ring-blue-400"
+                   required>
+            @error('price') <p class="text-red-600 mt-1 text-sm">{{ $message }}</p> @enderror
+        </div>
+
         <div class="mb-6">
             <label class="block font-medium mb-1">Categories</label>
             <select name="categories[]" class="js-example-basic-multiple w-full" multiple="multiple">
                 @foreach($categories as $category)
-                    <option value="{{ $category }}" {{ (collect(old('categories'))->contains($category)) ? 'selected' : '' }}>
-                        {{ $category }}
+                    <option value="{{ $category->id }}" {{ (collect(old('categories'))->contains($category->id)) ? 'selected' : '' }}>
+                        {{ $category->name }}
                     </option>
                 @endforeach
             </select>
             @error('categories') <p class="text-red-600 mt-1 text-sm">{{ $message }}</p> @enderror
         </div>
 
-        <!-- Buttons -->
         <div class="flex items-center">
             <button type="submit" class="bg-blue-600 hover:bg-blue-700 text-white px-5 py-2 rounded shadow transition">
                 Save
@@ -83,7 +85,7 @@ $(document).ready(function() {
         placeholder: 'Select categories',
         width: '100%',
         allowClear: true,
-        closeOnSelect: true
+        closeOnSelect: false
     });
 });
 </script>
